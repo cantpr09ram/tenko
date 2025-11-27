@@ -101,7 +101,7 @@ class Authenticator:
         response = self.session.post(login_url, data=payload)
 
         if self.check_login_success(response) != True:
-            return {"erorr": "user name or password maybe not currect on the os level"}
+            return {"error": "user name or password maybe not currect on the os level"}
         headers = {"Referer": login_url, "Upgrade-Insecure-Requests": "1"}
         user_redirect_url = (
             f"https://sso.tku.edu.tw/NEAI/eaido.jsp?"
