@@ -3,13 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "rockyou-iclass"
+name = "rollcall"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.13.2",
+    "brotli>=1.2.0",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
 ]
