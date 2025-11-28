@@ -1,9 +1,5 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
-name = "rollcall"
+name = "tenko"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,18 +7,16 @@ requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.13.2",
     "brotli>=1.2.0",
+    "certifi>=2025.11.12",
+    "charset-normalizer>=3.4.4",
+    "idna>=3.11",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
+    "textual>=6.6.0",
+    "urllib3>=2.5.0",
 ]
 
-[project.scripts]
-rollcall = "main:main"
-
-[tool.hatch.build.targets.wheel]
-packages = ["api"]
-only-include = [
-    "main.py",
-    "getrollcall.py",
-    "sendNum.py",
-    "sendRadar.py",
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.17.0",
 ]

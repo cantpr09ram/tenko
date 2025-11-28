@@ -1,7 +1,7 @@
 import json
 import logging
 
-from api.http_headers import radar_headers
+from tku.http_headers import radar_headers
 
 if not logging.getLogger().hasHandlers():
     logging.basicConfig(
@@ -11,17 +11,17 @@ if not logging.getLogger().hasHandlers():
 logger = logging.getLogger(__name__)
 
 
-def answer_rollcall_Radar(session, rollcall_id):
+def answer_rollcall_Radar(session, rollcall_id, endpoint="https://iclass.tku.edu.tw", latitude=25.174269373936202, longitude=121.45422774303604):
     url = (
-        f"https://iclass.tku.edu.tw/api/rollcall/{rollcall_id}/answer?api_version=1.1.2"
+        f"{endpoint}/api/rollcall/{rollcall_id}/answer?api_version=1.1.2"
     )
 
     headers = radar_headers()
 
     payload = {
         "deviceId": "7eba2081f77e5525",  # 7eba2081f77e5527
-        "latitude": 25.174269373936202,
-        "longitude": 121.45422774303604,
+        "latitude": latitude,
+        "longitude": longitude,
         "speed": None,
         "accuracy": 34.400001525878906,
         "altitude": 77.69999694824219,

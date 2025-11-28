@@ -10,7 +10,7 @@ if not logging.getLogger().hasHandlers():
 logger = logging.getLogger(__name__)
 
 
-def wait_for_rollcall(session: requests.Session, sec: int = 10) -> tuple[int, str]:
+def wait_for_rollcall(session: requests.Session, sec: int = 10, endpoint: str = "https://elearn2.fju.edu.tw") -> tuple[int, str]:
     """
     Polls the iClass rollcall API until the specified rollcall_id is found.
 
@@ -21,7 +21,7 @@ def wait_for_rollcall(session: requests.Session, sec: int = 10) -> tuple[int, st
     Returns:
         tuple: (rollcall_id, source) when found.
     """
-    url = "https://iclass.tku.edu.tw/api/radar/rollcalls?api_version=1.1.0"
+    url = f"{endpoint}/api/radar/rollcalls?api_version=1.1.0"
     while True:
         try:
             response = session.get(url)

@@ -4,7 +4,7 @@ import asyncio
 import json
 import logging
 
-from api.http_headers import number_rollcall_headers
+from tku.http_headers import number_rollcall_headers
 
 if not logging.getLogger().hasHandlers():
     logging.basicConfig(
@@ -29,9 +29,9 @@ async def try_code(session, url, headers, code):
 
 
 async def answer_rollcall_number_async(
-    session, rollcall_id, *, concurrency=DEFAULT_CONCURRENCY
+    session, rollcall_id, *, concurrency=DEFAULT_CONCURRENCY, endpoint="https://iclass.tku.edu.tw",
 ):
-    url = f"https://iclass.tku.edu.tw/api/rollcall/{rollcall_id}/answer_number_rollcall"
+    url = f"{endpoint}/api/rollcall/{rollcall_id}/answer_number_rollcall"
     headers = number_rollcall_headers()
     concurrency = max(1, min(concurrency, MAX_NUMBER_CODE))
 
