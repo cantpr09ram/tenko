@@ -115,4 +115,5 @@ class Authenticator:
         )
 
         self.session = session
+        logger.info("🔐 Authentication successful")
         return self.session

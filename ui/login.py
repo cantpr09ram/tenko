@@ -7,9 +7,13 @@ import requests
 from PIL import Image
 from rich_pixels import Pixels
 from rich.console import Console
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 async def login() -> Tuple[str, str]:
+    logger.info("logging in...")
     username = await questionary.text("Username:").ask_async()
     password = await questionary.password("Password:").ask_async()
     result = (username or "", password or "")
@@ -17,6 +21,7 @@ async def login() -> Tuple[str, str]:
 
 
 async def login_with_captcha_url(url: str) -> Tuple[str, str, str, str]:
+    logger.info("logging in with...")
     response = requests.get(url)
     response.raise_for_status()
 

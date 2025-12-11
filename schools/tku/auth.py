@@ -55,7 +55,7 @@ class Authenticator:
             logger.warning("Login failed")
             return False
         else:
-            logger.info("Login successful")
+            logger.info("🔐 Authentication successful")
             return True
 
     def perform_auth(self):

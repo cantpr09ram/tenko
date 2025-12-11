@@ -219,7 +219,7 @@ class Authenticator:
                 headers=session.headers,
                 timeout=10,
             )
-
+            logger.info("🔐 Authentication successful")
             return session
 
         raise RuntimeError("未取得 authorization code after retries")

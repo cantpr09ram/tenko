@@ -25,29 +25,17 @@ class SchoolConfig:
 
 async def tku_auth() -> Union[Session, dict]:
     from schools.tku.auth import Authenticator
-
-    logger.info("🔐 Logging in (TKU)...")
     auth = await Authenticator.create()
     session = auth.perform_auth()
-
-    # Check if authentication failed
-    if isinstance(session, dict) and "error" in session:
-        logger.error("TKU authentication failed: %s", session["error"])
-        return session
-
     session.headers.update(session_headers())
-    logger.info("TKU session initialized.")
     return session
 
 
 async def fju_auth() -> Session:
     from schools.fju.auth import Authenticator
-
-    logger.info("🔐 Logging in (FJU)...")
     auth = await Authenticator.create()
     session = auth.login()
     session.headers.update(session_headers())
-    logger.info("FJU session initialized.")
     return session
 
 
@@ -57,7 +45,6 @@ async def au_auth() -> Union[Session, dict]:
     auth = await Authenticator.create()
     session = auth.login()
     session.headers.update(session_headers())
-    logger.info("AU session initialized.")
     return session
 
 
