@@ -1,20 +1,18 @@
-from textual.app import App, ComposeResult
-from textual.widgets import Select
+import questionary
+import asyncio
 
 school = ["tku", "fju", "au"]
 
 
 async def select_school() -> str:
-    class _SelectApp(App[str]):
+    result = await questionary.select(
+        "Select your school",
+        choices=school
+    ).ask_async()
 
-        def compose(self) -> ComposeResult:
-            yield Select(
-                options=[(opt, opt) for opt in school],
-                prompt="Select your school",
-            )
-
-        def on_select_changed(self, event: Select.Changed) -> None:
-            self.exit(event.value)
-
-    result = await _SelectApp().run_async()
     return result if result is not None else "tku"
+
+if __name__ == "__main__":
+    
+    selected_school = asyncio.run(select_school())
+    print(f"Selected school: {selected_school}")
