@@ -1,0 +1,78 @@
+name: Build Linux Packages
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+        REPO_NAME: ${{ github.event.repository.name }}
+        VERSION: ${{ github.event.release.tag_name || 'dev' }}
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y ruby-dev build-essential
+          sudo gem install --no-document fpm
+
+      - name: Build PyInstaller binary
+        run: |
+          echo "[+] Installing uv..."
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+
+          echo "[+] Creating virtualenv with uv"
+          uv venv .venv
+          source .venv/bin/activate
+
+          echo "[+] Installing dependencies"
+          uv sync    # reads pyproject.toml or requirements.txt automatically
+          uv pip install pyinstaller
+
+          echo "[+] Building binary"
+          pyinstaller main.py --onefile --name ${REPO_NAME}
+
+      - name: Prepare package directory
+        run: |
+          mkdir -p package/usr/bin
+          cp dist/${REPO_NAME} package/usr/bin/
+
+      - name: Build .deb package
+        run: |
+          fpm -s dir -t deb -n ${REPO_NAME} -v 1.0 \
+              -C package \
+              --prefix / \
+              --description "${REPO_NAME} packaged as DEB" \
+              usr/bin/${REPO_NAME}
+
+      - name: Build .rpm package
+        run: |
+          fpm -s dir -t rpm -n ${REPO_NAME} -v 1.0 \
+              -C package \
+              --prefix / \
+              --description "${REPO_NAME} packaged as RPM" \
+              usr/bin/${REPO_NAME}
+
+      - name: Upload DEB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.REPO_NAME }}_${{ env.VERSION }}_amd64.deb
+          path: ./*.deb
+
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.REPO_NAME }}-${{ env.VERSION }}-1.x86_64.rpm
+          path: ./*.rpm
+
