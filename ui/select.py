@@ -1,14 +1,19 @@
 import questionary
 import asyncio
-
+from dotenv import load_dotenv
+import os
 school = ["tku", "fju", "au"]
 
 
+
 async def select_school() -> str:
-    result = await questionary.select(
-        "Select your school",
-        choices=school
-    ).ask_async()
+    load_dotenv()
+    result = os.getenv("SCHOOL")
+    if not result:
+        result = await questionary.select(
+            "Select your school",
+            choices=school
+        ).ask_async()
 
     return result if result is not None else "tku"
 

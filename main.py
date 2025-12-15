@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
+    
     school_key = await select_school()
     logger.info("Selected school: %s", school_key)
 

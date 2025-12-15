@@ -32,15 +32,15 @@ class Authenticator:
     async def create(cls) -> "Authenticator":
         """
         建立 Authenticator
-        1. 優先讀 .env 中 USERNAMEID / PASSWORD
+        1. 優先讀 .env 中 STUDENTID / PASSWORD
         2. 若沒設，就用 Textual TUI 互動式輸入
         """
         load_dotenv()
-        username = os.getenv("USERNAMEID")
+        username = os.getenv("STUDENTID")
         password = os.getenv("PASSWORD")
 
         if not username or not password:
-            logger.warning("USERNAMEID or PASSWORD not set. Prompting for credentials.")
+            logger.warning("STUDENTID or PASSWORD not set. Prompting for credentials.")
             username, password = await login()
             logger.info("Credentials entered via TUI login")
 

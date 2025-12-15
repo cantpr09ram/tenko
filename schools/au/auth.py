@@ -27,13 +27,13 @@ class Authenticator:
     @classmethod
     async def create(cls) -> "Authenticator":
         load_dotenv()
-        username = os.getenv("USERNAMEID")
+        username = os.getenv("STUDENTID")
         password = os.getenv("PASSWORD")
         captcha_num = ""
         captcha_key = ""
 
         if not username or not password:
-            logger.warning("USERNAMEID or PASSWORD not set. Prompting for credentials.")
+            logger.warning("STUDENTID or PASSWORD not set. Prompting for credentials.")
             username, password, captcha_num, captcha_key = await login_with_captcha_url(
                 "https://tcidentity.asia.edu.tw/auth/realms/asia/captcha/code"
             )

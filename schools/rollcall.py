@@ -29,14 +29,14 @@ async def handle_rollcall(
         logger.info("Number rollcall response: %s", data)
 
     elif source == "radar":
-        radar_response = await answer_rollcall_Radar(
+        data = await answer_rollcall_Radar(
             session=auth_session,
             rollcall_id=rollcall_id,
             endpoint=endpoint,
             latitude=latitude,
             longitude=longitude,
         )
-        logger.info("Radar rollcall response: %s", radar_response.text)
+        logger.info("Radar rollcall response: %s", data)
 
     else:
         logger.warning("Unknown rollcall source: %s", source)

@@ -11,7 +11,7 @@ if not logging.getLogger().hasHandlers():
 logger = logging.getLogger(__name__)
 
 
-def answer_rollcall_Radar(session, rollcall_id, endpoint="https://iclass.tku.edu.tw", latitude=25.174269373936202, longitude=121.45422774303604):
+async def answer_rollcall_Radar(session, rollcall_id, endpoint="https://iclass.tku.edu.tw", latitude=25.174269373936202, longitude=121.45422774303604):
     url = (
         f"{endpoint}/api/rollcall/{rollcall_id}/answer?api_version=1.1.2"
     )
@@ -33,5 +33,10 @@ def answer_rollcall_Radar(session, rollcall_id, endpoint="https://iclass.tku.edu
     }
 
     response = session.put(url, headers=headers, data=json.dumps(payload))
-    logger.info("Radar response: %s - %s", response.status_code, response.text)
-    return response
+    if response.status_code == 200:
+        logger.info("Radar rollcall response: %s", response.text)
+        logger.info("✅ Radar rollcall answered successfully.")
+        return True
+    else:
+        logger.info("Radar response: %s", response.status_code, response.text)
+    return False
